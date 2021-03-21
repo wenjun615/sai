@@ -1,0 +1,17 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: sai
+  profiles:
+    active: dev
+
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-field: deleted # 逻辑删除实体属性
+      logic-delete-value: 1 # 删除
+      logic-not-delete-value: 0 # 未删除
+  mapper-locations:
+    - classpath*:/mapper/**/*Mapper.xml
