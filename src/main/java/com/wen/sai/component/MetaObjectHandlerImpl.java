@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
  * @since 2021/3/21
  */
 @Component
-public class MyMetaObjectHandler implements MetaObjectHandler {
+public class MetaObjectHandlerImpl implements MetaObjectHandler {
 
     @Override
     public void insertFill(MetaObject metaObject) {

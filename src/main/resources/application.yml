@@ -15,3 +15,29 @@ mybatis-plus:
       logic-not-delete-value: 0 # 未删除
   mapper-locations:
     - classpath*:/mapper/**/*Mapper.xml
+
+# 自定义安全配置
+secure:
+  ignore:
+    urls:
+      - /user/register
+      - /user/login
+      - /user/info
+      - /user/logout
+
+# 自定义 Redis 配置
+redis:
+  database: sai
+  key:
+    user: 'user'
+    resources: 'resources'
+  expire: 86400 # 秒 24 小时
+
+# 自定义 JWT 配置
+jwt:
+  authHeader: Authorization # 存储 Token 的请求头
+  tokenHead: 'Bearer ' # Token 开头
+  secret: sai # Token 生成及验签的秘钥（对称加密）
+  expiration: 604800 # Token 过期时间（秒 60 * 60 * 24 * 7）
+  username: username # JWT 负载属性名 用户名
+  createTime: createTime # JWT 负载属性名 创建时间

@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
      * @return 公共返回结果对象
      */
     @ExceptionHandler(ApiException.class)
-    public CommonResult apiExceptionHandle(ApiException e) {
+    public CommonResult<?> apiExceptionHandle(ApiException e) {
         log.error(e.getMessage(), e);
         if (Objects.nonNull(e.getCommonCode())) {
             return CommonResult.failed(e.getCommonCode());
@@ -45,7 +45,7 @@ public class GlobalExceptionHandler {
      * @return 公共返回结果对象
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public CommonResult validExceptionHandle(MethodArgumentNotValidException e) {
+    public CommonResult<?> validateExceptionHandle(MethodArgumentNotValidException e) {
         StringBuilder stringBuilder = new StringBuilder(ApiMessageConstants.VALIDATE_FAILURE);
         e.getBindingResult()
                 .getFieldErrors()

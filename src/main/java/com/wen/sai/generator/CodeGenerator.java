@@ -12,8 +12,8 @@ import com.baomidou.mybatisplus.generator.config.po.TableFill;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.VelocityTemplateEngine;
-import com.wen.sai.common.entity.BaseController;
-import com.wen.sai.common.entity.BaseEntity;
+import com.wen.sai.entity.base.BaseController;
+import com.wen.sai.entity.base.BaseEntity;
 
 import java.util.ArrayList;
 import java.util.List;

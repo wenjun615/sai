@@ -3,7 +3,7 @@ package com.wen.sai.common.service.impl;
 import com.wen.sai.common.service.RedisService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
  * @author wenjun
  * @since 2021/1/24
  */
-@Component
+@Service
 @AllArgsConstructor
 public class RedisServiceImpl implements RedisService {
 

@@ -1,4 +1,4 @@
-package com.wen.sai.common.entity;
+package com.wen.sai.entity.base;
 
 /**
  * <p>

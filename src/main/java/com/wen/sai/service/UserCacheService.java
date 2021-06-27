@@ -1,17 +1,16 @@
 package com.wen.sai.service;
 
 import com.wen.sai.model.User;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
- * 用户表 服务类
+ * 用户缓存 Service
  * </p>
  *
  * @author wenjun
- * @since 2021-03-21
+ * @since 2021/3/25
  */
-public interface UserService extends IService<User> {
+public interface UserCacheService {
 
     /**
      * 根据用户名获取单个
@@ -20,4 +19,11 @@ public interface UserService extends IService<User> {
      * @return 用户
      */
     User getByUsername(String username);
+
+    /**
+     * 设置
+     *
+     * @param user 用户
+     */
+    void set(User user);
 }
