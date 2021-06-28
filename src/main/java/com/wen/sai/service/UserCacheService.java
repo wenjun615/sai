@@ -13,7 +13,7 @@ import com.wen.sai.model.User;
 public interface UserCacheService {
 
     /**
-     * 根据用户名获取单个
+     * 根据用户名获取用户
      *
      * @param username 用户名
      * @return 用户
@@ -21,7 +21,7 @@ public interface UserCacheService {
     User getByUsername(String username);
 
     /**
-     * 设置
+     * 设置用户
      *
      * @param user 用户
      */

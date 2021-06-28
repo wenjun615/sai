@@ -19,6 +19,7 @@ import java.io.PrintWriter;
  * @author wenjun
  * @since 2020/12/21
  */
+@Component
 public class RestfulAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override

@@ -5,6 +5,7 @@ import com.wen.sai.config.JwtProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Date;
@@ -18,13 +19,10 @@ import java.util.Objects;
  * @author wenjun
  * @since 2021-06-28
  */
+@AllArgsConstructor
 public class JwtUtil {
 
     private final JwtProperties jwtProperties;
-
-    public JwtUtil(JwtProperties jwtProperties) {
-        this.jwtProperties = jwtProperties;
-    }
 
     /**
      * 生成 Token
@@ -43,11 +41,16 @@ public class JwtUtil {
     }
 
     /**
-     * 获取 Token 登录用户名
+     * 获取 JWT 负载（验签）
      */
-    public String findUsername(String token) {
-        Claims claims = findClaims(token);
-        return Objects.isNull(claims) ? null : claims.getSubject();
+    public Claims findClaims(String token) {
+        if (StrUtil.isBlank(token)) {
+            return null;
+        }
+        return Jwts.parser()
+                .setSigningKey(jwtProperties.getSecret())
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     /**
@@ -76,16 +79,6 @@ public class JwtUtil {
      */
     private Date generateExpiration(Date date) {
         return new Date(date.getTime() + jwtProperties.getExpiration() * 1000);
-    }
-
-    /**
-     * 获取 JWT 负载
-     */
-    private Claims findClaims(String token) {
-        return Jwts.parser()
-                .setSigningKey(jwtProperties.getSecret())
-                .parseClaimsJws(token)
-                .getBody();
     }
 
     /**

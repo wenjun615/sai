@@ -17,4 +17,16 @@
         id, path, description, is_deleted, create_time, update_time
     </sql>
 
+    <select id="listByUserId" resultMap="BaseResultMap">
+        select t4.id,
+               t4.path,
+               t4.description,
+               t4.create_time
+        from ums_user_role_relation t1
+                 inner join ums_role t2 on t1.role_id = t2.id
+                 inner join ums_role_resource_relation t3 on t2.id = t3.role_id
+                 inner join ums_resource t4 on t3.resource_id = t4.id
+        where t1.user_id = #{userId}
+        order by t4.create_time desc;
+    </select>
 </mapper>

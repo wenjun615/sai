@@ -1,7 +1,8 @@
 package com.wen.sai.service;
 
-import com.wen.sai.model.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wen.sai.model.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * <p>
@@ -14,7 +15,15 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface UserService extends IService<User> {
 
     /**
-     * 根据用户名获取单个
+     * 根据用户名加载用户详情
+     *
+     * @param username 用户名
+     * @return 用户详情
+     */
+    UserDetails loadUserByUsername(String username);
+
+    /**
+     * 根据用户名获取用户
      *
      * @param username 用户名
      * @return 用户
