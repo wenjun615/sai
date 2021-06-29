@@ -3,6 +3,7 @@ package com.wen.sai.component;
 import cn.hutool.core.util.StrUtil;
 import com.wen.sai.common.util.JwtUtil;
 import com.wen.sai.config.JwtProperties;
+import com.wen.sai.service.UserService;
 import io.jsonwebtoken.Claims;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +34,7 @@ import java.util.Objects;
 @Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
-    private final UserDetailsService userDetailsService;
+    private final UserService userService;
 
     private final JwtProperties jwtProperties;
 
@@ -47,7 +48,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             Claims claims = jwtUtil.findClaims(token);
             if (Objects.nonNull(claims)) {
                 String username = String.valueOf(claims.get(jwtProperties.getUsername()));
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                UserDetails userDetails = userService.loadUserByUsername(username);
                 if (Objects.nonNull(userDetails)) {
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                             username, null, userDetails.getAuthorities());

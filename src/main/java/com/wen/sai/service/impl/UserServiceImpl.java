@@ -1,7 +1,11 @@
 package com.wen.sai.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.wen.sai.common.exception.ApiException;
+import com.wen.sai.common.util.JwtUtil;
+import com.wen.sai.config.JwtProperties;
 import com.wen.sai.entity.bo.UserDetailsBO;
+import com.wen.sai.entity.query.UserQuery;
 import com.wen.sai.mapper.UserMapper;
 import com.wen.sai.model.Resource;
 import com.wen.sai.model.User;
@@ -9,8 +13,11 @@ import com.wen.sai.service.ResourceService;
 import com.wen.sai.service.UserCacheService;
 import com.wen.sai.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,6 +38,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private final UserCacheService userCacheService;
 
     private final ResourceService resourceService;
+
+    private final PasswordEncoder passwordEncoder;
+
+    private final JwtProperties jwtProperties;
 
     @Override
     public UserDetails loadUserByUsername(String username) {
@@ -56,5 +67,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         userCacheService.set(user);
         return user;
+    }
+
+    @Override
+    public String login(UserQuery query) {
+        UserDetails userDetails = loadUserByUsername(query.getUsername());
+        if (passwordEncoder.matches(query.getPassword(), userDetails.getPassword())) {
+            SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
+                    userDetails.getUsername(), null, userDetails.getAuthorities()));
+            JwtUtil jwtUtil = new JwtUtil(jwtProperties);
+            return jwtUtil.generateToken(userDetails);
+        }
+        throw new ApiException("用户名或密码错误");
     }
 }

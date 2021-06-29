@@ -1,6 +1,7 @@
 package com.wen.sai.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wen.sai.entity.query.UserQuery;
 import com.wen.sai.model.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -29,4 +30,12 @@ public interface UserService extends IService<User> {
      * @return 用户
      */
     User getByUsername(String username);
+
+    /**
+     * 登录
+     *
+     * @param query 请求参数
+     * @return Token
+     */
+    String login(UserQuery query);
 }
