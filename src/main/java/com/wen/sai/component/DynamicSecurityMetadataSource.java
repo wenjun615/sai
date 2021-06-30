@@ -3,12 +3,11 @@ package com.wen.sai.component;
 import cn.hutool.core.util.URLUtil;
 import com.wen.sai.model.Resource;
 import com.wen.sai.service.ResourceService;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
-import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 
 import javax.annotation.PostConstruct;
@@ -23,11 +22,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author wenjun
  * @since 2020/12/23
  */
-@Component
-@AllArgsConstructor
 public class DynamicSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
 
-    private final ResourceService resourceService;
+    @Autowired
+    private ResourceService resourceService;
 
     /**
      * 动态权限规则
@@ -65,7 +63,7 @@ public class DynamicSecurityMetadataSource implements FilterInvocationSecurityMe
         // 当前访问路径
         String path = URLUtil.getPath(url);
         configAttributeMap.forEach((pattern, configAttribute) -> {
-            if (pathMatcher.match(path, pattern)) {
+            if (pathMatcher.match(pattern, path)) {
                 configAttributeList.add(configAttribute);
             }
         });

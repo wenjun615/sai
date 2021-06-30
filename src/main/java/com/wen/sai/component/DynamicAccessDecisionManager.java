@@ -8,7 +8,6 @@ import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -21,7 +20,6 @@ import java.util.Objects;
  * @author wenjun
  * @since 2020/12/23
  */
-@Component
 public class DynamicAccessDecisionManager implements AccessDecisionManager {
 
     @Override

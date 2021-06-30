@@ -5,13 +5,11 @@ import com.wen.sai.common.util.JwtUtil;
 import com.wen.sai.config.JwtProperties;
 import com.wen.sai.service.UserService;
 import io.jsonwebtoken.Claims;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -30,13 +28,13 @@ import java.util.Objects;
  * @since 2020/12/22
  */
 @Slf4j
-@AllArgsConstructor
-@Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
-    private final UserService userService;
+    @Autowired
+    private UserService userService;
 
-    private final JwtProperties jwtProperties;
+    @Autowired
+    private JwtProperties jwtProperties;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,

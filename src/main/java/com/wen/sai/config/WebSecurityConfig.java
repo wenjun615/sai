@@ -3,9 +3,9 @@ package com.wen.sai.config;
 import com.wen.sai.component.*;
 import com.wen.sai.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.ObjectPostProcessor;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,7 +25,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * @author wenjun
  * @since 2021/3/24
  */
-@Configuration
 @EnableWebSecurity
 @AllArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -34,17 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final IgnoreProperties ignoreProperties;
 
-    private final RestfulAccessDeniedHandler restfulAccessDeniedHandler;
-
-    private final RestfulAuthenticationEntryPoint restfulAuthenticationEntryPoint;
-
-    private final DynamicSecurityMetadataSource dynamicSecurityMetadataSource;
-
-    private final DynamicAccessDecisionManager dynamicAccessDecisionManager;
-
     private final PasswordEncoder passwordEncoder;
-
-    private final JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
 
     @Override
     protected UserDetailsService userDetailsService() {
@@ -70,19 +59,48 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .exceptionHandling()
-                .accessDeniedHandler(restfulAccessDeniedHandler)
-                .authenticationEntryPoint(restfulAuthenticationEntryPoint)
-                .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
-                    @Override
-                    public <O extends FilterSecurityInterceptor> O postProcess(O o) {
-                        o.setSecurityMetadataSource(dynamicSecurityMetadataSource);
-                        o.setAccessDecisionManager(dynamicAccessDecisionManager);
-                        return o;
-                    }
-                })
+                .accessDeniedHandler(restfulAccessDeniedHandler())
+                .authenticationEntryPoint(restAuthenticationEntryPoint())
                 .and()
-                .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(dynamicSecurityFilter(), FilterSecurityInterceptor.class)
                 .csrf()
                 .disable();
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public DynamicAccessDecisionManager dynamicAccessDecisionManager() {
+        return new DynamicAccessDecisionManager();
+    }
+
+    @Bean
+    public DynamicSecurityFilter dynamicSecurityFilter() {
+        return new DynamicSecurityFilter();
+    }
+
+    @Bean
+    public DynamicSecurityMetadataSource dynamicSecurityMetadataSource() {
+        return new DynamicSecurityMetadataSource();
+    }
+
+    @Bean
+    public JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter() {
+        return new JwtAuthenticationTokenFilter();
+    }
+
+    @Bean
+    public RestfulAccessDeniedHandler restfulAccessDeniedHandler() {
+        return new RestfulAccessDeniedHandler();
+    }
+
+    @Bean
+    public RestfulAuthenticationEntryPoint restAuthenticationEntryPoint() {
+        return new RestfulAuthenticationEntryPoint();
     }
 }

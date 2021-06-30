@@ -37,7 +37,7 @@ redis:
 jwt:
   authHeader: Authorization # 存储 Token 的请求头
   tokenHead: 'Bearer ' # Token 开头
-  secret: sai # Token 生成及验签的秘钥（对称加密）
+  secret: sai-secret # Token 生成及验签的秘钥（对称加密），最少四个字符
   expiration: 604800 # Token 过期时间（秒 60 * 60 * 24 * 7）
   username: username # JWT 负载属性名 用户名
   createTime: createTime # JWT 负载属性名 创建时间

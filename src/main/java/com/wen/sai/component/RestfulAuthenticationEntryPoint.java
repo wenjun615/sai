@@ -5,7 +5,6 @@ import com.wen.sai.common.api.CommonCode;
 import com.wen.sai.common.api.CommonResult;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +19,6 @@ import java.io.PrintWriter;
  * @author wenjun
  * @since 2020/12/21
  */
-@Component
 public class RestfulAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override

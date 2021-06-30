@@ -18,11 +18,11 @@ import javax.validation.constraints.NotBlank;
 @ApiModel(value = "User Param", description = "用户相关功能请求参数")
 public class UserQuery {
 
-    @NotBlank(groups = {Register.class, Login.class})
+    @NotBlank(groups = {Register.class, Login.class}, message = "用户名不为空")
     @ApiModelProperty(value = "用户名", required = true)
     private String username;
 
-    @NotBlank(groups = {Register.class, Login.class})
+    @NotBlank(groups = {Register.class, Login.class}, message = "密码不为空")
     @ApiModelProperty(value = "密码", required = true)
     private String password;
 
