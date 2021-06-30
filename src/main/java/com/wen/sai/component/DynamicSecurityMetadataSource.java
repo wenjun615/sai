@@ -63,6 +63,7 @@ public class DynamicSecurityMetadataSource implements FilterInvocationSecurityMe
         // 当前访问路径
         String path = URLUtil.getPath(url);
         configAttributeMap.forEach((pattern, configAttribute) -> {
+            // 注意 pattern path 先后顺序，不然不能匹配
             if (pathMatcher.match(pattern, path)) {
                 configAttributeList.add(configAttribute);
             }

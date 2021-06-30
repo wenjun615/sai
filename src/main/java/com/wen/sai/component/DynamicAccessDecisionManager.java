@@ -1,6 +1,5 @@
 package com.wen.sai.component;
 
-import cn.hutool.core.collection.CollUtil;
 import com.wen.sai.common.constant.ApiMessageConstants;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
@@ -22,18 +21,19 @@ import java.util.Objects;
  */
 public class DynamicAccessDecisionManager implements AccessDecisionManager {
 
+    /**
+     * collection 为空时不会执行此方法
+     */
     @Override
     public void decide(Authentication authentication, Object o, Collection<ConfigAttribute> collection) throws AccessDeniedException, InsufficientAuthenticationException {
-        if (CollUtil.isNotEmpty(collection)) {
-            for (ConfigAttribute configAttribute : collection) {
-                for (GrantedAuthority grantedAuthority : authentication.getAuthorities()) {
-                    if (Objects.equals(grantedAuthority.getAuthority(), configAttribute.getAttribute())) {
-                        return;
-                    }
+        for (ConfigAttribute configAttribute : collection) {
+            for (GrantedAuthority grantedAuthority : authentication.getAuthorities()) {
+                if (Objects.equals(grantedAuthority.getAuthority(), configAttribute.getAttribute())) {
+                    return;
                 }
             }
-            throw new AccessDeniedException(ApiMessageConstants.UNAUTHORISED);
         }
+        throw new AccessDeniedException(ApiMessageConstants.UNAUTHORISED);
     }
 
     @Override
