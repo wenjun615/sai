@@ -14,7 +14,7 @@ public interface ApiMessageConstants {
 
     String FAILURE = "操作失败！";
 
-    String VALIDATE_FAILURE = "请求参数验证失败！";
+    String VALIDATE_FAILURE = "请求参数校验失败！";
 
     String UNAUTHENTICATED = "未登录或登录过期！";
 

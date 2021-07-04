@@ -2,10 +2,9 @@ package com.wen.sai.common.util;
 
 import cn.hutool.core.util.StrUtil;
 import com.wen.sai.config.JwtProperties;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Date;
@@ -19,6 +18,7 @@ import java.util.Objects;
  * @author wenjun
  * @since 2021-06-28
  */
+@Slf4j
 @AllArgsConstructor
 public class JwtUtil {
 
@@ -28,29 +28,46 @@ public class JwtUtil {
      * 生成 Token
      */
     public String generateToken(UserDetails userDetails) {
+        if (Objects.isNull(userDetails)) {
+            return null;
+        }
         Date now = new Date();
         Date expiration = generateExpiration(now);
         Map<String, Object> claims = new HashMap<>(16);
         claims.put(jwtProperties.getUsername(), userDetails.getUsername());
         claims.put(jwtProperties.getCreateTime(), now);
-        return Jwts.builder()
-                .setClaims(claims)
-                .setExpiration(expiration)
-                .signWith(SignatureAlgorithm.HS512, jwtProperties.getSecret())
-                .compact();
+        String token;
+        try {
+            token = Jwts.builder()
+                    .setClaims(claims)
+                    .setExpiration(expiration)
+                    .signWith(SignatureAlgorithm.HS512, jwtProperties.getSecret())
+                    .compact();
+        } catch (Exception e) {
+            log.warn("生成令牌异常：{}", e.getMessage(), e);
+            token = null;
+        }
+        return token;
     }
 
     /**
-     * 获取 JWT 负载（验签）
+     * 获取 JWT 负载（是否过期、验签）
      */
     public Claims findClaims(String token) {
         if (StrUtil.isBlank(token)) {
             return null;
         }
-        return Jwts.parser()
-                .setSigningKey(jwtProperties.getSecret())
-                .parseClaimsJws(token)
-                .getBody();
+        Claims claims;
+        try {
+            claims = Jwts.parser()
+                    .setSigningKey(jwtProperties.getSecret())
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (Exception e) {
+            log.warn("令牌校验异常：{}", e.getMessage(), e);
+            claims = null;
+        }
+        return claims;
     }
 
     /**

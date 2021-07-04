@@ -39,9 +39,9 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 请求参数验证失败异常处理
+     * 请求参数校验失败异常处理
      *
-     * @param e 请求参数验证失败异常
+     * @param e 请求参数校验失败异常
      * @return 公共返回结果对象
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
