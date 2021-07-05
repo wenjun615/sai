@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 @Data
 @Configuration
 @ConfigurationProperties(prefix = "redis")
-public class RedisProperties {
+public class SaiRedisProperties {
 
     private String database;
 
