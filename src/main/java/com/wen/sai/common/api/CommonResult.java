@@ -53,7 +53,7 @@ public class CommonResult<T> {
      * @param <T>     响应数据类型
      * @return 返回结果
      */
-    public static <T> CommonResult<T> successful(String message, T data) {
+    public static <T> CommonResult<T> successful(T data, String message) {
         return new CommonResult<>(CommonCode.SUCCESS.getCode(), message, data);
     }
 

@@ -33,6 +33,6 @@ public class UserController extends BaseController {
     @PostMapping("/login")
     public CommonResult<String> login(@RequestBody @Validated(UserQuery.Login.class) UserQuery query) {
         String token = userService.login(query);
-        return CommonResult.successful("登录成功", token);
+        return CommonResult.successful(token, "登录成功");
     }
 }
